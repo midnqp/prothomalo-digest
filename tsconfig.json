@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "module": "NodeNext",
+        "resolveJsonModule": true,
+        "moduleResolution": "NodeNext",
+        "rootDir": ".",
+        "baseUrl": ".",
+        "outDir": "./dist",
+        "types": ["./types.d.ts"]
+    },
+    "include": ["./index.ts"],
+    "typeAcquisition": {"enable": true}
+}
