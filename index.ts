@@ -43,7 +43,7 @@ class Manager {
 
     public makeAudioArr:string[] = []
 
-    private playingStarted =false
+    public playingStarted =false
 
     private makingStarted=false
 
@@ -65,7 +65,7 @@ class Manager {
 
     // idempotent
     public async startMakingAudio() {
-        if (this.makingStarted) return
+        if (this.makingStarted) throw Error('making already started bro')
         this.makingStarted = true
 
         while (this.getArrLength()) {
@@ -75,11 +75,11 @@ class Manager {
             this.playReadyArr.push(item)
             console.log({playingStarted: this.playingStarted})
 
-            if (!this.playingStarted) {
+            if (!this.playingStarted) 
                 this.startPlayingAudio()
-            }
+            
         }
-
+        WorkerMakeSound.terminate()
     }
 
     public playReadyArr:string[] = []
@@ -92,7 +92,7 @@ class Manager {
 
     // idempotent
     public async startPlayingAudio() {
-        if (this.playingStarted) return
+        if (this.playingStarted) throw Error('play already started bro')
         this.playingStarted = true
         print('playingStarted = true')
 
@@ -110,6 +110,10 @@ class Manager {
         }
         this.playingStarted = false
         print('playStarted = false')
+
+        if (!this.getPlayReadyLength() && !this.getArrLength()) {
+            WorkerPlaySound.terminate()
+        }
     }
 }
 
@@ -172,7 +176,7 @@ for (const item of json.items) {
                 print('found audio')
                 
                 manager.playReadyArr.push(storyElement.id)
-                manager.startPlayingAudio()
+                if (!manager.playingStarted) manager.startPlayingAudio()
 
             }
             //articleAudioList.push(storyElement.id)
@@ -185,7 +189,7 @@ for (const item of json.items) {
 
 
 manager.startMakingAudio()
-manager.startPlayingAudio()
+if (!manager.playingStarted) manager.startPlayingAudio()
 
 
 
