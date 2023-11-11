@@ -1,5 +1,9 @@
 {
     "type": "module",
+    "scripts": {
+        "build": "npx tsc -p tsconfig.json",
+        "start": "node --no-warnings dist/index.js"
+    },
     "dependencies": {
         "ansi-escape-sequences": "^6.2.2",
         "any-ascii": "^0.3.2",
